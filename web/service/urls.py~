@@ -1,0 +1,11 @@
+from django.contrib import admin
+from django.urls import path
+from .views import *
+urlpatterns = [
+    path('login/', login_view, name='login_view'),
+    path('regist/',regist_view,name='regist_view'),
+    path('user/<int:pk>/package/',packages_view,name='packages_view'),
+    path('user/<int:pk>/package_info/',packages_info_view,name='packages_info_view')
+    
+]
+

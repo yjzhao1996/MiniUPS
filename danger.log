@@ -1,0 +1,21 @@
+2019-04-15:
+1. If there are a lot of requests, and two get_truck AUCommands find the same idle truck, there may have concurrency problem in database. We need to add lock to the database.
+2. If there are a lot of requests, and two threads are sending to world/Amazon at the same time, there may have concurrency problem in socket. We need to add lock at sending message.
+2019-04-16:
+3. We use threading rather than thread pool. When the amount of requests is big, there may be a buffer overflow.
+2019-04-17:
+4. We found that if we set flakness high, world may not have our command. So we save each ack from world in a set and let sending threads to read from this set. If corresponding ack does not appear, resend every 5 seconds.
+2019-04-20:
+5. World may send us duplicate response if we don't send ack to it. So we send a UCommands with an ack after we receive each response.
+2019-04-21:
+6. Users can access others' packages without login.
+7. If the Amazon side provide the same package id in the AUCommands, there may be an error in create_package method since package_id is primary key.
+2019-04-22:
+8. We found that if Amazon side does not provide a UPS account, there will be an error in create_package method.
+9. We found that if Amazon side provide a UPS account which is an empty string, there will be an error in create_package method.
+2019-04-23:
+10. We found that if Amazon side provide a UPS account which does not exist, there will be an error in create_package method.
+11. If there is an exception and server is down, we will not send disconnect to world to exit gracefully. We cannot connect to the previous world without droping the database. We can only create a new world.
+12. Some web pages may jump to error pages.
+2019-04-24:
+13. If the email address is empty or wrong, there may be an exception. Add a new try except block to handle this situation.
